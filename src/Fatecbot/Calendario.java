@@ -42,7 +42,7 @@ public class Calendario {
                 Feriados.put(data, new Feriado(data, titulo));
             else if (secao == "DiasSemAula")
                 DiasSemAula.put(data, new DiaSemAula(data, titulo));
-            else System.out.println("Linha '" + linha + "' não pertence a uma chave e será ignorado");
+            else System.out.println("Linha '" + linha + "' não pertence a uma chave e será ignorada");
         }
     }
     
