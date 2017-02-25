@@ -9,4 +9,9 @@ public class Feriado extends DiaSemAula{
     public String Descricao(){
         return "feriado de " + this.Titulo;
     }
+    
+    @Override
+    public Boolean DataCoincide(String Data){
+        return Data == super.Data;
+    }
 }
