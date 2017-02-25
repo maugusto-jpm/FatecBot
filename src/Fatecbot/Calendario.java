@@ -6,6 +6,8 @@ import java.util.List;
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -16,7 +18,7 @@ public class Calendario {
     private HashMap<String, Feriado> Feriados = new HashMap();
     private HashMap<String, DiaSemAula> DiasSemAula = new HashMap();
     
-    public Calendario(String Arquivo)throws FileNotFoundException, UnsupportedEncodingException{
+    public Calendario(String Arquivo)throws FileNotFoundException{
         Scanner arquivo = new Scanner(new File(Arquivo)).useDelimiter("\n");
         List<String> linhas = new ArrayList();
         while (arquivo.hasNext()) linhas.add(arquivo.next());
@@ -46,14 +48,38 @@ public class Calendario {
         }
     }
     
-    private String Hgd(String Dia, String Mes, HashMap Tipo){
-        Iterator it = Tipo.entrySet().iterator();
-    while (it.hasNext()) {
-        Map.Entry pair = (Map.Entry)it.next();
-        System.out.println(pair.getKey() + " = " + pair.getValue());
-        it.remove();
-    }
+    private String ProximaOcorrencia(List<String> Datas){
+        HashMap<Integer, List<Integer>> datas = new HashMap();
         
+        for (String data : Datas) {
+            int dia = Integer.parseInt(data.substring(0, 2)), mes = 0;
+            
+            if (data.contains("-")) Integer.parseInt(data.substring(3, 5));
+            else mes = Integer.parseInt(data.substring(3));
+
+            if (datas.containsKey(mes)){
+                List<Integer> m = datas.get(mes);
+                m.add(dia);
+            }
+            else{
+                List<Integer> m = new ArrayList();
+                m.add(dia);
+                datas.put(mes, m);
+            }
+        }        
+        int dia = this.Hoje.getDayOfMonth() + 1;
+        for (int mes = this.Hoje.getMonth().ordinal() + 1; mes <= 12; mes++){
+            if (datas.containsKey(mes))              
+                for (Integer d : datas.get(mes))
+                    if (d >= dia){
+                        String dd = String.valueOf(d);
+                        if (dd.length() == 1) dd = "0" + dd;
+                        String mm = String.valueOf(mes);
+                        if (dd.length() == 1) dd = "0" + dd;
+                        return dd + "/" + mm;
+                    }
+            dia = 1;
+        }
         return null;
     }
     
