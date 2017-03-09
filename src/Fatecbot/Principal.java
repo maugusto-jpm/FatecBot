@@ -15,13 +15,13 @@ import com.pengrad.telegrambot.response.SendResponse;
 public class Principal {
     private static Calendario Calendario;
     public static void main(String[] args) {
+
         try{
             Calendario = new Calendario("Calendario.ini");
+        } catch (Exception ex){
+            System.out.println("Não foi possível ler o arquivo 'Calendario.ini'");
         }
-        catch (Exception ex){
-            System.out.println("O arquivo de configuração 'Calendario.ini' não foi encontrado ou não é válido");
-            return;
-        }
+        
         //Criação do objeto bot com as informações de acesso
         TelegramBot bot = TelegramBotAdapter.build("361656060:AAEPisg7kMRaT849cMCktr_gcYGKtcK6M7U");
         //objeto responsável por receber as mensagens
@@ -48,7 +48,7 @@ public class Principal {
                 //atualização do off-set
                 m = update.updateId()+1;
 
-                System.out.println("Recebendo mensagem: " + update.message().text());
+                System.out.println("Recebendo: " + update.message().text());
 
                 //envio de "Escrevendo" antes de enviar a resposta
                 Acoes = bot.execute(new SendChatAction(update.message().chat().id(),
@@ -56,33 +56,41 @@ public class Principal {
                 
                 //verificação de ação de chat foi enviada com sucesso
                 System.out.println("Resposta de Chat Action Enviada?: " + Acoes.isOk());
+                String resposta = gerarResposta(update.message().text());
 
+                System.out.println("Enviando: " + resposta);
                 //envio da mensagem de resposta
-                Resposta = bot.execute(new SendMessage(update.message().chat().id(),
-                        GerarResposta(update.message().text())));
+                Resposta = bot.execute(new SendMessage(update.message().chat().id(), resposta));
                 
                 //verificação de mensagem enviada com sucesso
                 System.out.println("Mensagem Enviada?: " + Resposta.isOk());
             }
         }
     }
-    private static String GerarResposta(String Mensagem){
+    private static String gerarResposta(String Mensagem){
         Mensagem = Mensagem.toLowerCase();
-        if (Mensagem.endsWith("próximo feriado?") || Mensagem.endsWith("proximo feriado?"))
-            return Calendario.ProximoFeriado();
+        
+        if (Mensagem.equals("dicas"))
+            return "Exemplos de perguntas e comandos disponíveis:\n" +
+                    "Qual o próximo dia sem aula?\n" +
+                    "Em 14/05 vai ter aula?\n" +
+                    "Lista de dias sem aula";
         
         if ((Mensagem.startsWith("em ") || Mensagem.startsWith("dia ") || Mensagem.startsWith("na data "))
                 && (Mensagem.endsWith("vai ter aula?") || Mensagem.endsWith("haverá aula?") ||
                 Mensagem.endsWith("havera aula?") || Mensagem.endsWith("terá aula?") || Mensagem.endsWith("tera aula?")))
         {
             int indice = Mensagem.indexOf("/");
-            return Calendario.NaDataTeraAula(Mensagem.substring(indice - 2, indice + 3).replace(' ', '0'));
+            return Calendario.naDataTeraAula(Mensagem.substring(indice - 2, indice + 3).replace(' ', '0'));
         }
         
         if (Mensagem.endsWith("próximo dia sem aula?") || Mensagem.endsWith("proximo dia sem aula?"))
-            return Calendario.ProximoDiaSemAula();
+            return Calendario.proximoDiaSemAula();
+        
+        if (Mensagem.contains("lista")) return Calendario.listarDiasSemAula();
         
         return "Não entendi...\n" +
-                "Lembre-se de encerrar perguntas com ponto de interrogação";
+                "Lembre-se de encerrar perguntas com ponto de interrogação.\n\n"+
+                "Você pode digitar 'dicas' para ver as perguntas disponíveis";
     }
 }
