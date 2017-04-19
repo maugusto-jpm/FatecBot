@@ -14,16 +14,33 @@ import com.pengrad.telegrambot.response.SendResponse;
 
 public class Principal {
     private static Calendario Calendario;
-    public static void main(String[] args) {
+    //static boolean sim = true;
+    public static void main(String[] args){
 
         try{
             Calendario = new Calendario("Calendario.ini");
         } catch (Exception ex){
-            System.out.println("Não foi possível ler o arquivo 'Calendario.ini'");
+           System.out.println("Não foi possível ler o arquivo 'Calendario.ini'");
+           return;
         }
-        
+//        if (sim){
+//            System.out.println(gerarResposta("/start") + "\n");
+//            System.out.println(gerarResposta("/dicas") + "\n");
+//            System.out.println(gerarResposta("/diassemaula") + "\n");
+//            System.out.println(gerarResposta("/proximodiassemaula") + "\n");
+//            System.out.println(gerarResposta("/feriados") + "\n");
+//            System.out.println(gerarResposta("em 1/9 terá aula?") + "\n");
+//            System.out.println(gerarResposta("Em 15/8 terá aula?") + "\n");
+//            System.out.println(gerarResposta("em 1/10 terá aula?") + "\n");
+//            System.out.println(gerarResposta("terça terá aula?") + "\n");
+//            System.out.println(gerarResposta("amanhã terá aula?") + "\n");
+//            System.out.println(gerarResposta("depois de amanhã terá aula?") + "\n");
+//            
+//            return;
+//        }
         //Criação do objeto bot com as informações de acesso
         TelegramBot bot = TelegramBotAdapter.build("361656060:AAEPisg7kMRaT849cMCktr_gcYGKtcK6M7U");
+        //TelegramBot bot = TelegramBotAdapter.build("363969059:AAHhNunE8o1_niU6Blm3G-7e1E9qPKLjL00");
         //objeto responsável por receber as mensagens
         GetUpdatesResponse Pergunta;
         //objeto responsável por gerenciar o envio de respostas
@@ -61,7 +78,7 @@ public class Principal {
                 System.out.println("Enviando: " + resposta);
                 //envio da mensagem de resposta
                 Resposta = bot.execute(new SendMessage(update.message().chat().id(), resposta));
-                
+                                
                 //verificação de mensagem enviada com sucesso
                 System.out.println("Mensagem Enviada?: " + Resposta.isOk());
             }
@@ -70,24 +87,47 @@ public class Principal {
     private static String gerarResposta(String Mensagem){
         Mensagem = Mensagem.toLowerCase();
         
-        if (Mensagem.equals("dicas"))
-            return "Exemplos de perguntas e comandos disponíveis:\n" +
+        if (Mensagem.equals("/start"))
+            return "=== Bem-vindo ao bot Calendáro Fatec ===\n"
+                    + "Aqui você pode saber dos feriados e dias sem aula, além "
+                    + "das datas dos eventos que ocorrerão na Fatec\n"
+                    + "\nVocê pode digitar /dicas para ter a lista de comandos";
+        
+        if (Mensagem.equals("/dicas"))
+            return "Exemplos de perguntas e comandos disponíveis:\n\n" +
                     "Qual o próximo dia sem aula?\n" +
                     "Em 14/05 vai ter aula?\n" +
-                    "Lista de dias sem aula";
+                    "Lista de dias sem aula\n"
+                    + "Terça terá aula?\n"
+                    + "Amanhã terá aula?\n"
+                    + "Depois de amanhã terá aula?";
         
-        if ((Mensagem.startsWith("em ") || Mensagem.startsWith("dia ") || Mensagem.startsWith("na data "))
-                && (Mensagem.endsWith("vai ter aula?") || Mensagem.endsWith("haverá aula?") ||
-                Mensagem.endsWith("havera aula?") || Mensagem.endsWith("terá aula?") || Mensagem.endsWith("tera aula?")))
-        {
-            int indice = Mensagem.indexOf("/");
-            return Calendario.naDataTeraAula(Mensagem.substring(indice - 2, indice + 3).replace(' ', '0'));
-        }
+        if (Mensagem.equals("/amanhateraaula"))
+            return Calendario.nesteDiaTeraAula("Amanhã terá aula?");
         
-        if (Mensagem.endsWith("próximo dia sem aula?") || Mensagem.endsWith("proximo dia sem aula?"))
+        if (Mensagem.equals("/depoisdeamanhateraaula"))
+            return Calendario.nesteDiaTeraAula("Depois de amanhã terá aula?");
+        
+        if (Mensagem.startsWith("em ") || Mensagem.startsWith("dia ") || Mensagem.startsWith("na data ") ||
+                Mensagem.endsWith("vai ter aula?") || Mensagem.endsWith("haverá aula?") ||
+                Mensagem.endsWith("havera aula?") || Mensagem.endsWith("terá aula?")
+                || Mensagem.endsWith("tera aula?") || Mensagem.endsWith("tem aula?"))
+            return Calendario.nesteDiaTeraAula(Mensagem);
+        
+        if (Mensagem.equals("/diassemaula") || (Mensagem.contains("listar") && Mensagem.contains("dias sem aula")))
+            return Calendario.listarDiasSemAula();
+        
+        if (Mensagem.equals("/feriados") || (Mensagem.contains("listar") && Mensagem.contains("feriados")))
+            return Calendario.listarFeriados();
+        
+        if (Mensagem.equals("/proximodiassemaula") || Mensagem.endsWith("próximo dia sem aula?") ||
+                Mensagem.endsWith("proximo dia sem aula?"))
             return Calendario.proximoDiaSemAula();
         
-        if (Mensagem.contains("lista")) return Calendario.listarDiasSemAula();
+        if (Mensagem.equals("/amanhateraaula") || Mensagem.equals("amanhã terá aula?") ||
+                Mensagem.equals("amanha terá aula?") || Mensagem.equals("amanhã tera aula?") ||
+                Mensagem.equals("amanha tera aula?"))
+            return Calendario.amanhaTeraAula();
         
         return "Não entendi...\n" +
                 "Lembre-se de encerrar perguntas com ponto de interrogação.\n\n"+
