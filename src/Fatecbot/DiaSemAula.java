@@ -36,4 +36,8 @@ public class DiaSemAula {
         return this.Titulo + " que vai de " + this.Data.substring(0, 5) +
                 " até " + this.Data.substring(6);
     }
+    public String periodo(){
+        if (!this.Data.contains("-")) return "Em " + this.Data + " será " + this.Titulo;
+        return "De " + this.Data.substring(0, 5) + " a " + this.Data.substring(6) + " será " + this.Titulo;
+    }
 }
