@@ -168,9 +168,9 @@ public class Calendario {
         LocalDate hoje = LocalDate.now().plusDays(1);
         return this.naDataTeraAula(hoje.getDayOfMonth() + "/" + hoje.getMonthValue());
     }
-    public String nesteDiaTeraAula(String dia){
+    public String nesteDiaTeraAula(String dia) throws Exception{
         LocalDate hoje = LocalDate.now();
-        DayOfWeek ds = DayOfWeek.FRIDAY;
+        DayOfWeek ds;
         if (dia.contains("segunda")) ds = DayOfWeek.MONDAY;
         else if (dia.contains("terça") || dia.contains("terca")) ds = DayOfWeek.TUESDAY;
         else if (dia.contains("quarta")) ds = DayOfWeek.WEDNESDAY;
