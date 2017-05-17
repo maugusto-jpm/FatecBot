@@ -121,6 +121,14 @@ public class Calendario {
         return "Nenhum dia sem aula encontrado";
     }
     private String naDataTeraAula(String Data){
+        if (Data.length() < 5){
+            String[] data = Data.split("/");
+            if (data[0].length() == 1) Data = "0" + data[0];
+            else Data = data[0];
+            Data += "/";
+            if (data[1].length() == 1) Data += "0" + data[1];
+            else Data += data[1];
+        }
         LocalDate data = LocalDate.parse(Data + "/" + Calendario.Hoje.getYear(),
                 DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         if (data.isBefore(Calendario.Hoje)) data = data.plusYears(1);
