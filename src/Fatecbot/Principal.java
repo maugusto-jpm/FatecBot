@@ -39,7 +39,7 @@ public class Principal {
 //            return;
 //        }
         //Criação do objeto bot com as informações de acesso
-        TelegramBot bot = TelegramBotAdapter.build("361656060:AAEPisg7kMRaT849cMCktr_gcYGKtcK6M7U");
+        TelegramBot bot = TelegramBotAdapter.build("362696775:AAEL6mcoMZEPZtz8lwrsebaaq0eHTumwQu8");
         //TelegramBot bot = TelegramBotAdapter.build("363969059:AAHhNunE8o1_niU6Blm3G-7e1E9qPKLjL00");
         //objeto responsável por receber as mensagens
         GetUpdatesResponse Pergunta;
