@@ -102,20 +102,6 @@ public class Principal {
                     + "Amanhã terá aula?\n"
                     + "Depois de amanhã terá aula?";
         
-        try{
-            if (Mensagem.equals("/amanhateraaula"))
-                return Calendario.nesteDiaTeraAula("Amanhã terá aula?");
-
-            if (Mensagem.equals("/depoisdeamanhateraaula"))
-                return Calendario.nesteDiaTeraAula("Depois de amanhã terá aula?");
-
-            if (Mensagem.startsWith("em ") || Mensagem.startsWith("dia ") || Mensagem.startsWith("na data ") ||
-                    Mensagem.endsWith("vai ter aula?") || Mensagem.endsWith("haverá aula?") ||
-                    Mensagem.endsWith("havera aula?") || Mensagem.endsWith("terá aula?")
-                    || Mensagem.endsWith("tera aula?") || Mensagem.endsWith("tem aula?"))
-                return Calendario.nesteDiaTeraAula(Mensagem);
-        }
-        catch (Exception e) {}
         if (Mensagem.equals("/diassemaula") || (Mensagem.contains("listar") && Mensagem.contains("dias sem aula")))
             return Calendario.listarDiasSemAula();
         
@@ -130,6 +116,11 @@ public class Principal {
                 Mensagem.equals("amanha terá aula?") || Mensagem.equals("amanhã tera aula?") ||
                 Mensagem.equals("amanha tera aula?"))
             return Calendario.amanhaTeraAula();
+        
+        try{
+            return Calendario.nesteDiaTeraAula(Mensagem);
+        }
+        catch (Exception e) {}
         
         return "Não entendi...\n" +
                 "Lembre-se de encerrar perguntas com ponto de interrogação.\n\n"+
