@@ -102,8 +102,11 @@ public class Principal {
                     + "Amanhã terá aula?\n"
                     + "Depois de amanhã terá aula?";
         
-        if (Mensagem.equals("/diassemaula") || (Mensagem.contains("listar") && Mensagem.contains("dias sem aula")))
+        if (Mensagem.equals("/diassemaula"))
             return Calendario.listarDiasSemAula();
+        
+        if (Mensagem.equals("/feriados"))
+            return Calendario.listarFeriados();
         
         if (Mensagem.equals("/feriados") || (Mensagem.contains("listar") && Mensagem.contains("feriados")))
             return Calendario.listarFeriados();
