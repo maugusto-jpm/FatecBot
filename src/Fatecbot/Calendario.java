@@ -103,6 +103,7 @@ public class Calendario {
         
         return "Nenhum feriado encontrado";
     }
+    
     public String proximoDiaSemAula(){
         List<String> lista = new ArrayList();
         Iterator it = this.Feriados.entrySet().iterator();
@@ -120,6 +121,7 @@ public class Calendario {
         
         return "Nenhum dia sem aula encontrado";
     }
+    
     private String naDataTeraAula(String Data){
         if (Data.length() < 5){
             String[] data = Data.split("/");
@@ -154,6 +156,7 @@ public class Calendario {
         
         return "Sim. Em " + Data + " terá aula";
     }
+    
     public String listarDiasSemAula(){
         String resultado = "";
         for (HashMap.Entry dsa : this.DiasSemAula.entrySet()) {
@@ -164,6 +167,7 @@ public class Calendario {
         if (!resultado.isEmpty()) resultado += "\n";
         return resultado += this.listarFeriados();
     }
+    
     public String listarFeriados(){
         String resultado = "";
         for (HashMap.Entry dsa : this.Feriados.entrySet()) {
@@ -172,10 +176,12 @@ public class Calendario {
         }
         return resultado;
     }
+    
     public String amanhaTeraAula(){
         LocalDate hoje = LocalDate.now().plusDays(1);
         return this.naDataTeraAula(hoje.getDayOfMonth() + "/" + hoje.getMonthValue());
     }
+    
     public String nesteDiaTeraAula(String dia) throws Exception{
         LocalDate hoje = LocalDate.now();
         DayOfWeek ds;
