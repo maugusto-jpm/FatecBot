@@ -11,11 +11,6 @@ public class Feriado extends DiaSemAula{
     }
     
     @Override
-    public Boolean DataCoincide(String Data){
-        return (Data == null ? super.Data == null : Data.equals(super.Data));
-    }
-    
-    @Override
     public String periodo(){
         if (!this.Data.contains("-")) return "Em " + this.Data + " será feriado de " + this.Titulo;
         return "De " + this.Data.substring(0, 5) + " a " + this.Data.substring(6) + " será feriado de " + this.Titulo;
