@@ -190,7 +190,7 @@ public class Calendario {
         else if (dia.contains("quarta")) ds = DayOfWeek.WEDNESDAY;
         else if (dia.contains("quinta")) ds = DayOfWeek.THURSDAY;
         else if (dia.contains("sexta")) ds = DayOfWeek.FRIDAY;
-        else if (dia.contains("depois de amanhã") || dia.contains("depois de amanha")) {
+        else if (dia.contains("depois de amanhã") || dia.contains("depois de amanha") || dia.equals("/depoisdeamanhateraaula")) {
             hoje = LocalDate.now().plusDays(2);
             String mes = String.valueOf(hoje.getMonthValue());
             if (mes.length() == 1) mes = "0" + mes.toCharArray()[0];
